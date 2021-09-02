@@ -1,44 +1,60 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { login, whoAmI} from "../../services/authService";
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { login, WhoAmI, whoAmI } from '../../services/authService'
+import { useHistory, withRouter, RouteComponentProps } from 'react-router-dom'
 
 interface AuthFormFields {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
 }
 
-const Auth = () => {
-    const { register, handleSubmit, watch, setValue } = useForm<AuthFormFields>({
-        defaultValues: {
-            email: '',
-            password: '',
-        }
-    });
+interface AuthProps extends RouteComponentProps {
+  user: WhoAmI | null;
+}
 
-    const { email, password } = watch();
+const Auth = ({ user }: AuthProps) => {
+  const { register, handleSubmit, watch, setValue } = useForm<AuthFormFields>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  })
 
+  let history = useHistory()
 
-    return <form onSubmit={handleSubmit(data => login(data).then((res) => console.log(res, 'res')))}>
-        <label>Email:</label>
-        <input
-            {...register('email')}
-            value={email}
-            onChange={({target:{value}})=>setValue('email', value)}
-        />
-        <label>password:</label>
-        <input
-            {...register('password')}
-            value={password}
-            onChange={({target:{value}})=>setValue('password', value)}
-        />
-        <button type='submit'>
-            Войти
-        </button>
+  const { email, password } = watch()
 
-        <button type="button" onClick={() =>whoAmI().then((res) => console.log(res, 'res'))}>
-                rrr
-        </button>
+  if (user) {
+    history.push('/')
+  }
+  return (
+    <form
+      onSubmit={handleSubmit((data) =>
+        login(data).then((res) => console.log(res, 'res'))
+      )}
+    >
+      <label>Email:</label>
+      <input
+        {...register('email')}
+        value={email}
+        onChange={({ target: { value } }) => setValue('email', value)}
+      />
+      <label>password:</label>
+      <input
+        {...register('password')}
+        value={password}
+        onChange={({ target: { value } }) => setValue('password', value)}
+      />
+      <button type="submit">Войти</button>
+
+      <button
+        type="button"
+        onClick={() => whoAmI().then((res) => console.log(res, 'res'))}
+      >
+        rrr
+      </button>
     </form>
+  )
 }
 
-export default Auth;
+export default withRouter<AuthProps, any>(Auth)
