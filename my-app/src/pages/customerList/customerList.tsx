@@ -2,15 +2,16 @@ import React from 'react'
 import { useRequest } from 'ahooks'
 import { Customer, getCustomers } from '../../services/customersService'
 import CustomerCard from './components'
-import SkeletonWrapper from '../../components/skeleton'
-import Skeleton from './skeleton'
+import Spinner from '../../components/spinner'
 
 const Customers = () => {
   const { data, loading } = useRequest<Customer[]>(getCustomers, {
     initialData: [],
   })
+
   return (
-    <SkeletonWrapper loading={loading} skeleton={<Skeleton />}>
+    <>
+      {loading && <Spinner />}
       <div className="content-header">
         <h1>Companies</h1>
         <button>Add company</button>
@@ -20,7 +21,7 @@ const Customers = () => {
           <CustomerCard {...customer} />
         ))}
       </div>
-    </SkeletonWrapper>
+    </>
   )
 }
 
