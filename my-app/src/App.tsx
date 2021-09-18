@@ -8,31 +8,38 @@ import {
 } from 'react-router-dom'
 import Auth from './pages/auth'
 import { logout, WhoAmI, whoAmI } from './services/authService'
+import Customers from './pages/customerList'
 
 export default function App() {
-  const [user, setUser] = useState<WhoAmI | null>(null)
+  const [user, setUser] = useState<WhoAmI | null>({
+    id: 'asdawd',
+    email: 'ver.valery99@gmail.com',
+  })
 
   useEffect(() => {
-    const login = async () => {
-      const userResult = await whoAmI()
-      setUser(userResult)
-    }
-    login()
+    // const login = async () => {
+    //   const userResult = await whoAmI()
+    //   setUser(userResult)
+    // }
+    // login()
   }, [])
 
   return (
     <Router>
       <div>
         <nav>
-          <ul>
+          <ul className="tabs">
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/home">Home</Link>
             </li>
             <li>
               <Link to="/about">About</Link>
             </li>
             <li>
               <Link to="/users">Users</Link>
+            </li>
+            <li>
+              <Link to="/customers">Customers</Link>
             </li>
             {/*<li><Link to="/auth">Auth</Link></li>*/}
           </ul>
@@ -46,13 +53,16 @@ export default function App() {
           </Route>
           {user ? (
             <>
+              <Route path="/customers">
+                <Customers />
+              </Route>
               <Route path="/about">
                 <About />
               </Route>
               <Route path="/users">
                 <Users />
               </Route>
-              <Route path="/">
+              <Route path="/home">
                 <Home />
               </Route>
             </>
