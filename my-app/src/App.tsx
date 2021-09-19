@@ -9,6 +9,7 @@ import {
 import Auth from './pages/auth'
 import { logout, WhoAmI, whoAmI } from './services/authService'
 import Customers from './pages/customerList'
+import Customer from './pages/customer/customer'
 
 export default function App() {
   const [user, setUser] = useState<WhoAmI | null>({
@@ -64,6 +65,9 @@ export default function App() {
               </Route>
               <Route path="/home">
                 <Home />
+              </Route>
+              <Route path="/customer/:id">
+                <Customer />
               </Route>
             </>
           ) : (
