@@ -61,3 +61,27 @@ code {
   top: 50%;
   left: 50%;
 }
+
+.table__header,
+.table__content {
+  display: flex;
+}
+
+.table__header__item {
+  width: 120px;
+  padding: 5px;
+  background: antiquewhite;
+}
+
+.table__content__item {
+  display: flex;
+  width: 120px;
+  padding: 5px;
+  background: aliceblue;
+}
+
+.table__content__item img {
+  width: 40px;
+  height: 40px;
+  background: red;
+}

@@ -1,4 +1,4 @@
-export interface ICustomerPositions {
+export interface IEmployees {
   id: string;
   customerId: string;
   photo: string;
@@ -15,9 +15,7 @@ export interface ICustomerPositions {
   reasonForLeaving: string;
 }
 
-export const getCustomerPositions = (
-  customerId: string
-): Promise<ICustomerPositions[]> =>
+export const getEmployees = (customerId: string): Promise<IEmployees[]> =>
   new Promise((resolve) =>
     setTimeout(
       () =>
@@ -36,7 +34,7 @@ export const getCustomerPositions = (
             status: 'working',
             startDate: 123124124,
             endDate: null,
-            reasonForLeaving: '',
+            reasonForLeaving: 'More salary',
           },
           {
             id: '2',
@@ -52,7 +50,7 @@ export const getCustomerPositions = (
             status: 'working',
             startDate: 123124124,
             endDate: null,
-            reasonForLeaving: '',
+            reasonForLeaving: 'More salary',
           },
         ]),
       1000
