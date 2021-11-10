@@ -25,8 +25,7 @@ const Customers = () => {
     return <Spinner />
   }
 
-  const handleGoToCustomer = (id: string) => history.push(`/customer/${id}`)
-  console.log(customerListStore.customerList, '999')
+  const handleGoToCustomer = (id: string) => history.push(`/customers/${id}`)
   return (
     <>
       <div className="content-header">

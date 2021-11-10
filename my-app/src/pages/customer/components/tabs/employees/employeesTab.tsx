@@ -1,21 +1,20 @@
-import DataTable from 'react-data-table-component'
 import { useRequest } from 'ahooks'
 import {
   getEmployees,
   IEmployees,
-} from '../../../../../services/customerPositions'
+} from '../../../../../services/customerEmployes'
 import Spinner from '../../../../../components/spinner'
-import { useMemo } from 'react'
+import ImgMe from './me.jpg'
 
 interface PositionsTabProps {
   customerId: string;
 }
 
 const EmployeesTab = ({ customerId }: PositionsTabProps) => {
-  const { data: employees, loading } = useRequest(() =>
+  const { data: employees = [], loading } = useRequest<IEmployees[]>(() =>
     getEmployees(customerId)
   )
-
+  console.log(employees, 'employees')
   if (loading) {
     return <Spinner />
   }
@@ -38,7 +37,7 @@ const EmployeesTab = ({ customerId }: PositionsTabProps) => {
           <div className="table__header__item">EndDate</div>
           <div className="table__header__item">Leaving reason</div>
         </div>
-        {employees?.map(
+        {employees.map(
           ({
             id,
             name,
@@ -54,10 +53,10 @@ const EmployeesTab = ({ customerId }: PositionsTabProps) => {
             endDate,
             reasonForLeaving,
           }) => (
-            <div key={id} className="table__content">
+            <div key={id} className="table__row">
               <div className="table__content__item">{id}</div>
               <div className="table__content__item">
-                <img src={photo} alt="photo" />
+                <img src={ImgMe} alt="photo" />
               </div>
               <div className="table__content__item">{surname}</div>
               <div className="table__content__item">{name}</div>

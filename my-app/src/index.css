@@ -63,25 +63,37 @@ code {
 }
 
 .table__header,
-.table__content {
+.table__row {
   display: flex;
+}
+
+.table__header {
+  background: tomato;
+  color: white;
+}
+
+.table__row {
+  background: antiquewhite;
+}
+
+.table__row:nth-child(2n) {
+  background: azure;
 }
 
 .table__header__item {
   width: 120px;
   padding: 5px;
-  background: antiquewhite;
 }
 
 .table__content__item {
   display: flex;
   width: 120px;
   padding: 5px;
-  background: aliceblue;
+  align-items: center;
 }
 
 .table__content__item img {
   width: 40px;
   height: 40px;
-  background: red;
+  object-fit: contain;
 }

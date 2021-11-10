@@ -6,6 +6,7 @@ import { Customer as ICustomer } from '../../services/customersService'
 import Spinner from '../../components/spinner'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import EmployeesTab from './components/tabs/employees'
+import PositionsTab from './components/tabs/positions'
 
 const Customer = () => {
   const { id } = useParams<{ id: string }>()
@@ -29,7 +30,7 @@ const Customer = () => {
           <Tab>Employees</Tab>
         </TabList>
         <TabPanel>
-          777
+          <PositionsTab customerId={id} />
         </TabPanel>
         <TabPanel>
           <EmployeesTab customerId={id} />

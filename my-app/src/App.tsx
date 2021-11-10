@@ -10,6 +10,7 @@ import Auth from './pages/auth'
 import { logout, WhoAmI, whoAmI } from './services/authService'
 import Customers from './pages/customerList'
 import Customer from './pages/customer/customer'
+import NewPosition from './pages/position/newPosition'
 
 export default function App() {
   const [user, setUser] = useState<WhoAmI | null>({
@@ -54,9 +55,6 @@ export default function App() {
           </Route>
           {user ? (
             <>
-              <Route path="/customers">
-                <Customers />
-              </Route>
               <Route path="/about">
                 <About />
               </Route>
@@ -66,8 +64,14 @@ export default function App() {
               <Route path="/home">
                 <Home />
               </Route>
-              <Route path="/customer/:id">
+              <Route exact strict path="/customers/:id/positions/new">
+                <NewPosition />
+              </Route>
+              <Route exact strict path="/customers/:id">
                 <Customer />
+              </Route>
+              <Route exact strict path="/customers">
+                <Customers />
               </Route>
             </>
           ) : (

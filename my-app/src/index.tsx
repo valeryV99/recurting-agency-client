@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
@@ -15,7 +16,9 @@ const store = {
 ReactDOM.render(
   <React.StrictMode>
     <StoreProvider store={store}>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </StoreProvider>
   </React.StrictMode>,
   document.getElementById('root')
