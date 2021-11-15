@@ -97,3 +97,15 @@ code {
   height: 40px;
   object-fit: contain;
 }
+
+label {
+ margin-right: 10px;
+}
+
+.position-form {
+  display: flex;
+  flex-direction: column;
+}
+.form-field {
+  margin-bottom: 10px;
+}

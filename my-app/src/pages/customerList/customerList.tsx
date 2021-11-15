@@ -30,7 +30,9 @@ const Customers = () => {
     <>
       <div className="content-header">
         <h1>Companies</h1>
-        <button>Add company</button>
+        <button onClick={() => history.push(`/customers/new/`)}>
+          Add company
+        </button>
       </div>
       <div className="customer-card__list">
         {customerListStore.customerList.map((customer) => (

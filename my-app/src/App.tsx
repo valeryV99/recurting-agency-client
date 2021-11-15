@@ -11,19 +11,25 @@ import { logout, WhoAmI, whoAmI } from './services/authService'
 import Customers from './pages/customerList'
 import Customer from './pages/customer/customer'
 import NewPosition from './pages/position/newPosition'
+import CustomerNew from './pages/customerNew'
 
 export default function App() {
   const [user, setUser] = useState<WhoAmI | null>({
-    id: 'asdawd',
-    email: 'ver.valery99@gmail.com',
+    id: '',
+    email: '',
+    admin: false,
   })
 
   useEffect(() => {
-    // const login = async () => {
-    //   const userResult = await whoAmI()
-    //   setUser(userResult)
-    // }
-    // login()
+    const login = async () => {
+      try {
+        const userResult = await whoAmI()
+        setUser(userResult)
+      } catch (e) {
+        setUser(null)
+      }
+    }
+    login()
   }, [])
 
   return (
@@ -66,6 +72,9 @@ export default function App() {
               </Route>
               <Route exact strict path="/customers/:id/positions/new">
                 <NewPosition />
+              </Route>
+              <Route exact strict sensitive path="/customers/new/">
+                <CustomerNew />
               </Route>
               <Route exact strict path="/customers/:id">
                 <Customer />
