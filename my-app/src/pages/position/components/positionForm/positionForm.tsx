@@ -1,4 +1,6 @@
 import { useForm } from 'react-hook-form'
+import { createPosition } from '../../../../services/positionsService'
+import { useParams } from 'react-router-dom'
 
 interface PositionFormFields {
   position: string;
@@ -11,6 +13,7 @@ interface PositionFormFields {
 }
 
 const PositionForm = () => {
+  const { id } = useParams<{ id: string }>()
   const { register, handleSubmit, watch, setValue } =
     useForm<PositionFormFields>({
       defaultValues: {
@@ -30,7 +33,14 @@ const PositionForm = () => {
   return (
     <form
       className="position-form"
-      onSubmit={handleSubmit((data) => console.log(data, 'data'))}
+      onSubmit={handleSubmit(async (data) => {
+        const response = await createPosition({
+          ...data,
+          salary: +data.salary,
+          customerId: id,
+        })
+        console.log(response, 'response')
+      })}
     >
       <div className="form-field">
         <label>Position name</label>

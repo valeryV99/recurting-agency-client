@@ -106,6 +106,19 @@ label {
   display: flex;
   flex-direction: column;
 }
+
 .form-field {
   margin-bottom: 10px;
+}
+
+.customer-card__values .customer-card__item {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 205px;
+  white-space: nowrap;
+}
+
+.customer__info__block {
+  display: flex;
+  align-items: center;
 }

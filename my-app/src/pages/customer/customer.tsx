@@ -22,8 +22,12 @@ const Customer = () => {
     <div>
       <h1>
         <span>Company: </span>
-        <span>{customer?.name}</span>
+        <span>{customer?.customer_name}</span>
       </h1>
+      <div className="customer__info__block">
+        <h2>Address: </h2>
+        <span>{customer?.address}</span>
+      </div>
       <Tabs>
         <TabList>
           <Tab>Positions</Tab>
