@@ -12,6 +12,8 @@ import Customers from './pages/customerList'
 import Customer from './pages/customer/customer'
 import NewPosition from './pages/position/newPosition'
 import CustomerNew from './pages/customerNew'
+import Candidates from './pages/candidates'
+import CandidateForm from './pages/candidateForm'
 
 export default function App() {
   const [user, setUser] = useState<WhoAmI | null>({
@@ -47,6 +49,9 @@ export default function App() {
               <Link to="/users">Users</Link>
             </li>
             <li>
+              <Link to="/candidates">Candidates</Link>
+            </li>
+            <li>
               <Link to="/customers">Customers</Link>
             </li>
             {/*<li><Link to="/auth">Auth</Link></li>*/}
@@ -69,6 +74,12 @@ export default function App() {
               </Route>
               <Route path="/home">
                 <Home />
+              </Route>
+              <Route exact strict sensitive path="/candidates/new">
+                <CandidateForm />
+              </Route>
+              <Route exact strict sensitive path="/candidates">
+                <Candidates />
               </Route>
               <Route exact strict path="/customers/:id/positions/new">
                 <NewPosition />
