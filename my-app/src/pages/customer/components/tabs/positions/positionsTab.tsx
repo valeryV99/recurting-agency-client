@@ -5,6 +5,8 @@ import {
   getCustomerPositions,
   ICustomerPositions,
 } from '../../../../../services/customerPositions'
+import { useMemo } from 'react'
+import Table from '../../../../../components/table'
 
 interface PositionsTabProps {
   customerId: string;
@@ -13,6 +15,44 @@ const PositionsTab = ({ customerId }: PositionsTabProps) => {
   const { push } = useHistory()
   const { data: positions = [], loading } = useRequest<ICustomerPositions[]>(
     () => getCustomerPositions(customerId)
+  )
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'ИД',
+        accessor: 'id',
+      },
+      {
+        Header: 'Вакансия',
+        accessor: 'position',
+      },
+      {
+        Header: 'ЗП',
+        accessor: 'salary',
+      },
+      {
+        Header: 'Умения',
+        accessor: 'skills',
+      },
+      {
+        Header: 'Статус вакансии',
+        accessor: 'status',
+      },
+      {
+        Header: 'Требования',
+        accessor: 'requirements',
+      },
+      {
+        Header: 'Дата открытия',
+        accessor: 'startDate',
+      },
+      {
+        Header: 'Дата закрытия',
+        accessor: 'endDate',
+      },
+    ],
+    []
   )
 
   if (loading) {
@@ -29,43 +69,7 @@ const PositionsTab = ({ customerId }: PositionsTabProps) => {
       >
         <button>+ Add position</button>
       </Link>
-      <div className="table">
-        <div>
-          <div className="table__header">
-            <div className="table__header__item">Id</div>
-            <div className="table__header__item">Position</div>
-            <div className="table__header__item">Salary</div>
-            <div className="table__header__item">Skills</div>
-            <div className="table__header__item">Status</div>
-            <div className="table__header__item">Requirements</div>
-            <div className="table__header__item">StartDate</div>
-            <div className="table__header__item">EndDate</div>
-          </div>
-          {positions.map(
-            ({
-              id,
-              position,
-              salary,
-              skills,
-              status,
-              requirements,
-              startDate,
-              endDate,
-            }) => (
-              <div key={id} className="table__row">
-                <div className="table__content__item">{id}</div>
-                <div className="table__content__item">{position}</div>
-                <div className="table__content__item">{salary}</div>
-                <div className="table__content__item">{skills}</div>
-                <div className="table__content__item">{status}</div>
-                <div className="table__content__item">{requirements}</div>
-                <div className="table__content__item">{startDate}</div>
-                <div className="table__content__item">{endDate}</div>
-              </div>
-            )
-          )}
-        </div>
-      </div>
+      <Table data={positions} columns={columns} />
     </>
   )
 }
