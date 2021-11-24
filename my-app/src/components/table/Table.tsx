@@ -1,8 +1,10 @@
+// @ts-nocheck
 import {
   useAsyncDebounce,
   useTable,
   useFilters,
   useGlobalFilter,
+  useSortBy,
 } from 'react-table'
 import { useMemo, useState } from 'react'
 import { matchSorter } from 'match-sorter'
@@ -16,11 +18,8 @@ interface TableProps {
 }
 
 function GlobalFilter({
-  // @ts-ignore
   preGlobalFilteredRows,
-  // @ts-ignore
   globalFilter,
-  // @ts-ignore
   setGlobalFilter,
 }) {
   const count = preGlobalFilteredRows.length
@@ -48,9 +47,7 @@ function GlobalFilter({
   )
 }
 
-// Define a default UI for filtering
 function DefaultColumnFilter({
-  // @ts-ignore
   column: { filterValue, preFilteredRows, setFilter },
 }) {
   const count = preFilteredRows.length
@@ -66,25 +63,17 @@ function DefaultColumnFilter({
   )
 }
 
-// This is a custom filter UI for selecting
-// a unique option from a list
 function SelectColumnFilter({
-  // @ts-ignore
   column: { filterValue, setFilter, preFilteredRows, id },
 }) {
-  // Calculate the options for filtering
-  // using the preFilteredRows
   const options = useMemo(() => {
     const options = new Set()
-    // @ts-ignore
     preFilteredRows.forEach((row) => {
       options.add(row.values[id])
     })
-    // @ts-ignore
     return [...options.values()]
   }, [id, preFilteredRows])
 
-  // Render a multi-select box
   return (
     <select
       value={filterValue}
@@ -102,20 +91,12 @@ function SelectColumnFilter({
   )
 }
 
-// This is a custom filter UI that uses a
-// slider to set the filter value between a column's
-// min and max values
 function SliderColumnFilter({
-  // @ts-ignore
   column: { filterValue, setFilter, preFilteredRows, id },
 }) {
-  // Calculate the min and max
-  // using the preFilteredRows
-
   const [min, max] = useMemo(() => {
     let min = preFilteredRows.length ? preFilteredRows[0].values[id] : 0
     let max = preFilteredRows.length ? preFilteredRows[0].values[id] : 0
-    // @ts-ignore
     preFilteredRows.forEach((row) => {
       min = Math.min(row.values[id], min)
       max = Math.max(row.values[id], max)
@@ -139,17 +120,12 @@ function SliderColumnFilter({
   )
 }
 
-// This is a custom UI for our 'between' or number range
-// filter. It uses two number boxes and filters rows to
-// ones that have values between the two
 function NumberRangeColumnFilter({
-  // @ts-ignore
   column: { filterValue = [], preFilteredRows, setFilter, id },
 }) {
   const [min, max] = useMemo(() => {
     let min = preFilteredRows.length ? preFilteredRows[0].values[id] : 0
     let max = preFilteredRows.length ? preFilteredRows[0].values[id] : 0
-    // @ts-ignore
     preFilteredRows.forEach((row) => {
       min = Math.min(row.values[id], min)
       max = Math.max(row.values[id], max)
@@ -193,23 +169,16 @@ function NumberRangeColumnFilter({
     </div>
   )
 }
-// @ts-ignore
 function fuzzyTextFilterFn(rows, id, filterValue) {
-  // @ts-ignore
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] })
 }
 
-// Let the table remove the filter if the string is empty
-// @ts-ignore
 fuzzyTextFilterFn.autoRemove = (val) => !val
 
 const Table = ({ columns, data }: TableProps) => {
   const filterTypes = useMemo(
     () => ({
-      // Add a new fuzzyTextFilterFn filter type.
       fuzzyText: fuzzyTextFilterFn,
-      // Or, override the default text filter to use
-      // "startWith"
       text: (rows: any[], id: string | number, filterValue: any) => {
         return rows.filter((row) => {
           const rowValue = row.values[id]
@@ -226,7 +195,6 @@ const Table = ({ columns, data }: TableProps) => {
 
   const defaultColumn = useMemo(
     () => ({
-      // Let's set up our default Filter UI
       Filter: DefaultColumnFilter,
     }),
     []
@@ -240,38 +208,37 @@ const Table = ({ columns, data }: TableProps) => {
     prepareRow,
     state,
     visibleColumns,
-    // @ts-ignore
     preGlobalFilteredRows,
-    // @ts-ignore
     setGlobalFilter,
   } = useTable(
     {
       columns,
       data,
-      // @ts-ignore
       defaultColumn, // Be sure to pass the defaultColumn option
       filterTypes,
     },
     useFilters, // useFilters!
-    useGlobalFilter // useGlobalFilter!
+    // useGlobalFilter, // useGlobalFilter!
+    useSortBy
   )
 
   // We don't want to render all of the rows for this example, so cap
   // it for this use case
   const firstPageRows = rows.slice(0, 10)
-
   return (
-    // @ts-ignore
     <table {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup) => (
-          // @ts-ignore
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              // @ts-ignore
-              <th {...column.getHeaderProps()}>
+              <th
+                {...column.getHeaderProps()}
+                onClick={() =>
+                  column.toggleSortBy(column.isSortedDesc ? '' : 'desc')
+                }
+              >
                 {column.render('Header')}
-                {/*// @ts-ignore*/}
+                <span>{column.isSortedDesc ? ' 🔽' : ' 🔼'}</span>
                 <div>{column?.canFilter ? column.render('Filter') : null}</div>
               </th>
             ))}
@@ -284,24 +251,20 @@ const Table = ({ columns, data }: TableProps) => {
               textAlign: 'left',
             }}
           >
-            <GlobalFilter
-              preGlobalFilteredRows={preGlobalFilteredRows}
-              // @ts-ignore
-              globalFilter={state?.globalFilter}
-              setGlobalFilter={setGlobalFilter}
-            />
+            {/*<GlobalFilter*/}
+            {/*  preGlobalFilteredRows={preGlobalFilteredRows}*/}
+            {/*  globalFilter={state?.globalFilter}*/}
+            {/*  setGlobalFilter={setGlobalFilter}*/}
+            {/*/>*/}
           </th>
         </tr>
       </thead>
-      {/*// @ts-ignore*/}
       <tbody {...getTableBodyProps()}>
         {firstPageRows.map((row, i) => {
           prepareRow(row)
           return (
-            // @ts-ignore
             <tr {...row.getRowProps()}>
               {row.cells.map((cell) => {
-                // @ts-ignore
                 return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
               })}
             </tr>
