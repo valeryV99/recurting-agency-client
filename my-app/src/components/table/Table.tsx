@@ -15,6 +15,7 @@ interface TableProps {
     accessor: string,
   }[];
   data: any;
+  trOnClick?: any;
 }
 
 function GlobalFilter({
@@ -175,7 +176,7 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 
 fuzzyTextFilterFn.autoRemove = (val) => !val
 
-const Table = ({ columns, data }: TableProps) => {
+const Table = ({ columns, data, trOnClick }: TableProps) => {
   const filterTypes = useMemo(
     () => ({
       fuzzyText: fuzzyTextFilterFn,
@@ -224,7 +225,6 @@ const Table = ({ columns, data }: TableProps) => {
 
   // We don't want to render all of the rows for this example, so cap
   // it for this use case
-  const firstPageRows = rows.slice(0, 10)
   return (
     <table {...getTableProps()}>
       <thead>
@@ -260,10 +260,10 @@ const Table = ({ columns, data }: TableProps) => {
         </tr>
       </thead>
       <tbody {...getTableBodyProps()}>
-        {firstPageRows.map((row, i) => {
+        {rows.map((row, i) => {
           prepareRow(row)
           return (
-            <tr {...row.getRowProps()}>
+            <tr {...row.getRowProps()} onClick={() => trOnClick(row)}>
               {row.cells.map((cell) => {
                 return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
               })}

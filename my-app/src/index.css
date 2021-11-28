@@ -103,13 +103,55 @@ label {
  margin-right: 10px;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  max-width: max-content;
+  border: 2px solid orange;
+  border-radius: 4px;
+  margin: auto;
+}
+
 .position-form {
   display: flex;
   flex-direction: column;
 }
 
 .form-field {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field label {
   margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.form-field input {
+  padding: 5px;
+  border: none;
+  border-radius: 4px;
+}
+
+button {
+  margin: 10px;
+  border: 1px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 4px;
+  background: #6e817d;
+  color: white;
+  font-weight: 700;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button:active {
+  opacity: 0.5;
 }
 
 .customer-card__values .customer-card__item {

@@ -1,10 +1,15 @@
 import { useForm } from 'react-hook-form'
-import { createPosition } from '../../../../services/positionsService'
+import {
+  createPosition,
+  editPositionById,
+  getPositionById,
+} from '../../../../services/positionsService'
 import { useParams } from 'react-router-dom'
+import { useEffect } from 'react'
 
-interface PositionFormFields {
+export interface PositionFormFields {
   position: string;
-  salary: string;
+  salary: string | number;
   skills: string;
   status: string;
   requirements: string;
@@ -13,8 +18,9 @@ interface PositionFormFields {
 }
 
 const PositionForm = () => {
-  const { id } = useParams<{ id: string }>()
-  const { register, handleSubmit, watch, setValue } =
+  const { id, positionId } = useParams<{ id: string, positionId: string }>()
+
+  const { register, handleSubmit, watch, setValue, reset } =
     useForm<PositionFormFields>({
       defaultValues: {
         position: '',
@@ -30,20 +36,38 @@ const PositionForm = () => {
   const { position, salary, skills, status, requirements, startDate, endDate } =
     watch()
 
+  useEffect(() => {
+    if (positionId) {
+      const getPositionData = async () => {
+        const response = await getPositionById(positionId)
+        console.log(response, 'response')
+        reset(response)
+      }
+      getPositionData()
+    }
+  }, [positionId])
+
   return (
     <form
       className="position-form"
       onSubmit={handleSubmit(async (data) => {
-        const response = await createPosition({
-          ...data,
-          salary: +data.salary,
-          customerId: id,
-        })
-        console.log(response, 'response')
+        // const response = await createPosition({
+        //   ...data,
+        //   salary: +data.salary,
+        //   customerId: id,
+        // })
+        // console.log(response, 'response')
+        if (positionId) {
+          const responce = await editPositionById(positionId, {
+            ...data,
+            salary: Number(data.salary),
+          })
+          console.log(responce, 'responce')
+        }
       })}
     >
       <div className="form-field">
-        <label>Position name</label>
+        <label>Название вакансии</label>
         <input
           type="text"
           {...register('position')}
@@ -53,7 +77,7 @@ const PositionForm = () => {
       </div>
 
       <div className="form-field">
-        <label>Salary</label>
+        <label>Заработная плата</label>
         <input
           type="number"
           {...register('salary')}
@@ -63,7 +87,7 @@ const PositionForm = () => {
       </div>
 
       <div className="form-field">
-        <label>Status</label>
+        <label>Стутус вакансии(открытая/закрытая)</label>
         <input
           type="string"
           {...register('status')}
@@ -73,7 +97,7 @@ const PositionForm = () => {
       </div>
 
       <div className="form-field">
-        <label>Skills</label>
+        <label>Умения</label>
         <input
           type="string"
           {...register('skills')}
@@ -83,7 +107,7 @@ const PositionForm = () => {
       </div>
 
       <div className="form-field">
-        <label>Requirements</label>
+        <label>Требования</label>
         <input
           type="string"
           {...register('requirements')}
@@ -93,7 +117,7 @@ const PositionForm = () => {
       </div>
 
       <div className="form-field">
-        <label>Start date</label>
+        <label>Дата открытия вакансии</label>
         <input
           type="date"
           {...register('startDate')}
@@ -103,7 +127,7 @@ const PositionForm = () => {
       </div>
 
       <div className="form-field">
-        <label>End date</label>
+        <label>Дата закрытия вакансии</label>
         <input
           type="date"
           {...register('endDate')}
@@ -112,7 +136,7 @@ const PositionForm = () => {
         />
       </div>
 
-      <button type="submit">Create position</button>
+      <button type="submit">Создать вакансию</button>
     </form>
   )
 }

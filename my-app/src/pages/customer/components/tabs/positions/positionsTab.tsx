@@ -69,7 +69,14 @@ const PositionsTab = ({ customerId }: PositionsTabProps) => {
       >
         <button>+ Add position</button>
       </Link>
-      <Table data={positions} columns={columns} />
+      <Table
+        data={positions}
+        columns={columns}
+        // @ts-ignore
+        trOnClick={(row) =>
+          push(`/customers/${customerId}/positions/${row.values.id}`)
+        }
+      />
     </>
   )
 }

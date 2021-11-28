@@ -14,6 +14,7 @@ import NewPosition from './pages/position/newPosition'
 import CustomerNew from './pages/customerNew'
 import Candidates from './pages/candidates'
 import CandidateForm from './pages/candidateForm'
+import EditPosition from './pages/position/editPosition'
 
 export default function App() {
   const [user, setUser] = useState<WhoAmI | null>({
@@ -81,7 +82,19 @@ export default function App() {
               <Route exact strict sensitive path="/candidates">
                 <Candidates />
               </Route>
-              <Route exact strict path="/customers/:id/positions/new">
+              <Route
+                exact
+                strict
+                sensitive
+                path="/customers/:id/positions/:positionId"
+                render={({ match }) => {
+                  if (match.params.positionId === 'new') {
+                    return null
+                  }
+                  return <EditPosition />
+                }}
+              />
+              <Route exact strict sensitive path="/customers/:id/positions/new">
                 <NewPosition />
               </Route>
               <Route exact strict sensitive path="/customers/new/">
