@@ -51,31 +51,20 @@ const PositionForm = () => {
     <form
       className="position-form"
       onSubmit={handleSubmit(async (data) => {
-        // const response = await createPosition({
-        //   ...data,
-        //   salary: +data.salary,
-        //   customerId: id,
-        // })
-        // console.log(response, 'response')
         if (positionId) {
-          const responce = await editPositionById(positionId, {
+          await editPositionById(positionId, {
             ...data,
             salary: Number(data.salary),
           })
-          console.log(responce, 'responce')
+        } else {
+          await createPosition({
+            ...data,
+            salary: Number(data.salary),
+            customerId: id,
+          })
         }
       })}
     >
-      <div className="form-field">
-        <label>Название вакансии</label>
-        <input
-          type="text"
-          {...register('position')}
-          value={position}
-          onChange={({ target: { value } }) => setValue('position', value)}
-        />
-      </div>
-
       <div className="form-field">
         <label>Заработная плата</label>
         <input
@@ -83,6 +72,16 @@ const PositionForm = () => {
           {...register('salary')}
           value={salary}
           onChange={({ target: { value } }) => setValue('salary', value)}
+        />
+      </div>
+
+      <div className="form-field">
+        <label>Название вакансии</label>
+        <input
+          type="text"
+          {...register('position')}
+          value={position}
+          onChange={({ target: { value } }) => setValue('position', value)}
         />
       </div>
 

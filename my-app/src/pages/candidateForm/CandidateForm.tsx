@@ -2,6 +2,9 @@ import { useForm } from 'react-hook-form'
 import Select, { GroupBase } from 'react-select'
 import { createCandidate } from '../../services/candidates'
 import { useEffect } from 'react'
+import { useRequest } from 'ahooks'
+import { getAllRecruiters } from '../../services/recruiterService'
+import { getAllPositions } from '../../services/positionsService'
 
 const options = [
   { value: 'cfdf3ea5-25c8-49e7-8fdd-7bb372bfb9a4', label: 'Chocolate' },
@@ -25,6 +28,8 @@ export interface CandidateFormFields {
 }
 
 const CandidateForm = () => {
+  const { data: recruiters = [] } = useRequest(getAllRecruiters)
+  const { data: positions = [] } = useRequest(getAllPositions)
   const { register, watch, setValue, handleSubmit } =
     useForm<CandidateFormFields>({
       defaultValues: {
@@ -60,6 +65,7 @@ const CandidateForm = () => {
 
   useEffect(() => {
     register('recruiterId')
+    register('possiblePosition')
   }, [])
 
   console.log(recruiterId, 'recruiterId')
@@ -71,7 +77,7 @@ const CandidateForm = () => {
         console.log(response, 'response')
       })}
     >
-      <div>
+      <div className="form-field">
         <label htmlFor="">Candidate name</label>
         <input
           {...register('name')}
@@ -80,7 +86,7 @@ const CandidateForm = () => {
           onChange={({ target: { value } }) => setValue('name', value)}
         />
       </div>
-      <div>
+      <div className="form-field">
         <label htmlFor="">Candidate surname</label>
         <input
           {...register('surname')}
@@ -89,7 +95,7 @@ const CandidateForm = () => {
           onChange={({ target: { value } }) => setValue('surname', value)}
         />
       </div>
-      <div>
+      <div className="form-field">
         <label htmlFor="">Candidate patronymic</label>
         <input
           {...register('patronymic')}
@@ -98,7 +104,7 @@ const CandidateForm = () => {
           onChange={({ target: { value } }) => setValue('patronymic', value)}
         />
       </div>
-      <div>
+      <div className="form-field">
         <label htmlFor="">Candidate photo</label>
         <input
           {...register('photo')}
@@ -107,7 +113,7 @@ const CandidateForm = () => {
           onChange={({ target: { value } }) => setValue('photo', value)}
         />
       </div>
-      <div>
+      <div className="form-field">
         <label htmlFor="">Candidate birth</label>
         <input
           {...register('birth')}
@@ -116,7 +122,7 @@ const CandidateForm = () => {
           onChange={({ target: { value } }) => setValue('birth', value)}
         />
       </div>
-      <div>
+      <div className="form-field">
         <label htmlFor="">Candidate residence address</label>
         <input
           {...register('residenceAddress')}
@@ -127,18 +133,7 @@ const CandidateForm = () => {
           }
         />
       </div>
-      <div>
-        <label htmlFor="">Candidate possible position</label>
-        <input
-          {...register('possiblePosition')}
-          type="text"
-          value={possiblePosition}
-          onChange={({ target: { value } }) =>
-            setValue('possiblePosition', value)
-          }
-        />
-      </div>
-      <div>
+      <div className="form-field">
         <label htmlFor="">Candidate skills</label>
         <input
           {...register('skills')}
@@ -147,7 +142,7 @@ const CandidateForm = () => {
           onChange={({ target: { value } }) => setValue('skills', value)}
         />
       </div>
-      <div>
+      <div className="form-field">
         <label htmlFor="">Candidate education</label>
         <input
           {...register('education')}
@@ -156,7 +151,7 @@ const CandidateForm = () => {
           onChange={({ target: { value } }) => setValue('education', value)}
         />
       </div>
-      <div>
+      <div className="form-field">
         <label htmlFor="">Candidate Desired salary</label>
         <input
           {...register('desiredSalary')}
@@ -167,7 +162,7 @@ const CandidateForm = () => {
           }
         />
       </div>
-      <div>
+      <div className="form-field">
         <label htmlFor="">Status of Candidate</label>
         <input
           {...register('status')}
@@ -176,11 +171,29 @@ const CandidateForm = () => {
           onChange={({ target: { value } }) => setValue('status', value)}
         />
       </div>
-      <div>
+      <div className="form-field">
+        <label htmlFor="">Candidate possible position</label>
+        <Select
+          // @ts-ignore
+          options={Array.from(positions, ({ position, id }) => ({
+            value: id,
+            label: position,
+          }))}
+          // @ts-ignore
+          onChange={({ value }: { value: string }) => {
+            console.log(value, 'value')
+            setValue('possiblePosition', value)
+          }}
+        />
+      </div>
+      <div className="form-field">
         <label htmlFor="">Assigned recruiter</label>
         <Select
           // @ts-ignore
-          options={options}
+          options={Array.from(recruiters, ({ name, id }) => ({
+            value: id,
+            label: name,
+          }))}
           // @ts-ignore
           onChange={({ value }: { value: string }) => {
             console.log(value, 'value')

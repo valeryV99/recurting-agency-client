@@ -265,7 +265,18 @@ const Table = ({ columns, data, trOnClick }: TableProps) => {
           return (
             <tr {...row.getRowProps()} onClick={() => trOnClick(row)}>
               {row.cells.map((cell) => {
-                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                const cellProps = cell.getCellProps()
+                const isPhoto = cellProps.key.includes('photo')
+
+                return (
+                  <td {...cellProps} className={isPhoto ? 'tdPhoto' : ''}>
+                    {isPhoto ? (
+                      <img src={cell.value} alt="" />
+                    ) : (
+                      cell.render('Cell')
+                    )}
+                  </td>
+                )
               })}
             </tr>
           )

@@ -14,3 +14,6 @@ export const editPositionById = (
   requestService
     .put(`positions/${positionId}/edit`, body)
     .then(({ data }) => data)
+
+export const getAllPositions = () =>
+  requestService.get('positions').then(({ data }) => data)
