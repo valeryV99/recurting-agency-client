@@ -176,7 +176,7 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 
 fuzzyTextFilterFn.autoRemove = (val) => !val
 
-const Table = ({ columns, data, trOnClick }: TableProps) => {
+const Table = ({ columns, data, trOnClick = () => undefined }: TableProps) => {
   const filterTypes = useMemo(
     () => ({
       fuzzyText: fuzzyTextFilterFn,

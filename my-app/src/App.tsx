@@ -15,6 +15,8 @@ import CustomerNew from './pages/customerNew'
 import Candidates from './pages/candidates'
 import CandidateForm from './pages/candidateForm'
 import EditPosition from './pages/position/editPosition'
+import Interviews from './pages/interviews'
+import NewInterview from './pages/interview/newInterview'
 
 export default function App() {
   const [user, setUser] = useState<WhoAmI | null>({
@@ -47,7 +49,7 @@ export default function App() {
               <Link to="/about">About</Link>
             </li>
             <li>
-              <Link to="/users">Users</Link>
+              <Link to="/interviews">Interviews</Link>
             </li>
             <li>
               <Link to="/candidates">Candidates</Link>
@@ -70,8 +72,11 @@ export default function App() {
               <Route path="/about">
                 <About />
               </Route>
-              <Route path="/users">
-                <Users />
+              <Route path="/interviews">
+                <Interviews />
+              </Route>
+              <Route path="/interview/new">
+                <NewInterview />
               </Route>
               <Route path="/home">
                 <Home />

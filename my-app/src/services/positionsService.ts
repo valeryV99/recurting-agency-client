@@ -1,7 +1,7 @@
 import requestService from './requestService'
 import { PositionFormFields } from '../pages/position/components/positionForm/positionForm'
 
-export const createPosition = (body: any) =>
+export const createPosition = (body: PositionFormFields) =>
   requestService.post('positions', body).then(({ data }) => data)
 
 export const getPositionById = (positionId: string) =>

@@ -15,6 +15,7 @@ export interface PositionFormFields {
   requirements: string;
   startDate: string;
   endDate: string;
+  customerId: string;
 }
 
 const PositionForm = () => {
