@@ -1,75 +1,61 @@
 import { useHistory } from 'react-router-dom'
-import { Tab } from 'react-tabs'
 import Table from '../../components/table'
 import { useMemo } from 'react'
 import { useRequest } from 'ahooks'
 import { getAllInterviews } from '../../services/InterviewsService'
 
 const Interviews = () => {
-  const { data } = useRequest(getAllInterviews)
-  console.log(data, 'data')
+  const { data = [] } = useRequest(getAllInterviews)
   const history = useHistory()
 
-  // const columns = useMemo(
-  //   () => [
-  //     {
-  //       Header: 'ИД',
-  //       accessor: 'id',
-  //     },
-  //     {
-  //       Header: 'Фото',
-  //       accessor: 'photo',
-  //     },
-  //     {
-  //       Header: 'Имя',
-  //       accessor: 'name',
-  //     },
-  //     {
-  //       Header: 'Фамилия',
-  //       accessor: 'surname',
-  //     },
-  //     {
-  //       Header: 'Отчество',
-  //       accessor: 'patronymic',
-  //     },
-  //     {
-  //       Header: 'Образование',
-  //       accessor: 'education',
-  //     },
-  //     {
-  //       Header: 'Дата рождения',
-  //       accessor: 'birth',
-  //     },
-  //     {
-  //       Header: 'Возможная позиция',
-  //       accessor: 'possiblePosition',
-  //     },
-  //     {
-  //       Header: 'Прикрепленный рекрутер',
-  //       accessor: 'recruiterId',
-  //     },
-  //     {
-  //       Header: 'Адрес',
-  //       accessor: 'residenceAddress',
-  //     },
-  //     {
-  //       Header: 'Умения',
-  //       accessor: 'skills',
-  //     },
-  //     {
-  //       Header: 'Статус кандидата',
-  //       accessor: 'status',
-  //     },
-  //   ],
-  //   []
-  // )
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'ИД',
+        accessor: 'id',
+      },
+      {
+        Header: 'Позиция',
+        accessor: 'positionId',
+      },
+      {
+        Header: 'Кандидат',
+        accessor: 'candidateId',
+      },
+      {
+        Header: 'Дата проведения интервью',
+        accessor: 'interviewDate',
+      },
+      {
+        Header: 'Рейтинг кандидата',
+        accessor: 'rating',
+      },
+      {
+        Header: 'Рейтинг общительности кандидата',
+        accessor: 'sociability',
+      },
+      {
+        Header: 'Рейтинг командной работы кандидата',
+        accessor: 'teamwork',
+      },
+      {
+        Header: 'Рейтинг внимательности кандидата к деталям',
+        accessor: 'attentionToDetails',
+      },
+      {
+        Header: 'Рейтинг само мотивации кандидата',
+        accessor: 'selfMotivation',
+      },
+    ],
+    []
+  )
 
   return (
     <div>
       <button onClick={() => history.push('/interview/new')}>
-        Create interview
+        Создать интервью
       </button>
-      {/*<Table columns={} data={} />*/}
+      <Table columns={columns} data={data} />
     </div>
   )
 }

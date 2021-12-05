@@ -40,10 +40,6 @@ const Candidates = () => {
         accessor: 'birth',
       },
       {
-        Header: 'Возможная позиция',
-        accessor: 'possiblePosition',
-      },
-      {
         Header: 'Прикрепленный рекрутер',
         accessor: 'recruiterId',
       },
@@ -67,7 +63,7 @@ const Candidates = () => {
   return (
     <div>
       <button onClick={() => history.push('candidates/new')}>
-        Create candidate
+        Создать позицию
       </button>
       <Table data={data} columns={columns} />
     </div>

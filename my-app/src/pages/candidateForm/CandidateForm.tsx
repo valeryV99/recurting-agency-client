@@ -1,16 +1,9 @@
 import { useForm } from 'react-hook-form'
-import Select, { GroupBase } from 'react-select'
+import Select from 'react-select'
 import { createCandidate } from '../../services/candidates'
 import { useEffect } from 'react'
 import { useRequest } from 'ahooks'
 import { getAllRecruiters } from '../../services/recruiterService'
-import { getAllPositions } from '../../services/positionsService'
-
-const options = [
-  { value: 'cfdf3ea5-25c8-49e7-8fdd-7bb372bfb9a4', label: 'Chocolate' },
-  { value: 'cfdf3ea5-25c8-49e7-8fdd-7bb372bfb9a4', label: 'Strawberry' },
-  { value: 'cfdf3ea5-25c8-49e7-8fdd-7bb372bfb9a4', label: 'Vanilla' },
-]
 
 export interface CandidateFormFields {
   name: string;
@@ -19,7 +12,6 @@ export interface CandidateFormFields {
   photo: string;
   birth: string;
   residenceAddress: string;
-  possiblePosition: string;
   skills: string;
   education: string;
   desiredSalary: number;
@@ -29,7 +21,6 @@ export interface CandidateFormFields {
 
 const CandidateForm = () => {
   const { data: recruiters = [] } = useRequest(getAllRecruiters)
-  const { data: positions = [] } = useRequest(getAllPositions)
   const { register, watch, setValue, handleSubmit } =
     useForm<CandidateFormFields>({
       defaultValues: {
@@ -41,7 +32,6 @@ const CandidateForm = () => {
         birth: '',
         residenceAddress: '',
         education: '',
-        possiblePosition: '',
         status: '',
         skills: '',
         desiredSalary: 0,
@@ -56,7 +46,6 @@ const CandidateForm = () => {
     photo,
     birth,
     residenceAddress,
-    possiblePosition,
     skills,
     education,
     desiredSalary,
@@ -65,20 +54,12 @@ const CandidateForm = () => {
 
   useEffect(() => {
     register('recruiterId')
-    register('possiblePosition')
   }, [])
 
-  console.log(recruiterId, 'recruiterId')
   return (
-    <form
-      onSubmit={handleSubmit(async (data) => {
-        console.log(data, 'data')
-        const response = await createCandidate(data)
-        console.log(response, 'response')
-      })}
-    >
+    <form onSubmit={handleSubmit(async (data) => await createCandidate(data))}>
       <div className="form-field">
-        <label htmlFor="">Candidate name</label>
+        <label htmlFor="">Имя кандидата</label>
         <input
           {...register('name')}
           type="text"
@@ -87,7 +68,7 @@ const CandidateForm = () => {
         />
       </div>
       <div className="form-field">
-        <label htmlFor="">Candidate surname</label>
+        <label htmlFor="">Фамилия кандидата</label>
         <input
           {...register('surname')}
           type="text"
@@ -96,7 +77,7 @@ const CandidateForm = () => {
         />
       </div>
       <div className="form-field">
-        <label htmlFor="">Candidate patronymic</label>
+        <label htmlFor="">Отчество кандидата</label>
         <input
           {...register('patronymic')}
           type="text"
@@ -105,7 +86,7 @@ const CandidateForm = () => {
         />
       </div>
       <div className="form-field">
-        <label htmlFor="">Candidate photo</label>
+        <label htmlFor="">Фото кандидата</label>
         <input
           {...register('photo')}
           type="text"
@@ -114,16 +95,16 @@ const CandidateForm = () => {
         />
       </div>
       <div className="form-field">
-        <label htmlFor="">Candidate birth</label>
+        <label htmlFor="">День рождения кандидата</label>
         <input
           {...register('birth')}
-          type="text"
+          type="date"
           value={birth}
           onChange={({ target: { value } }) => setValue('birth', value)}
         />
       </div>
       <div className="form-field">
-        <label htmlFor="">Candidate residence address</label>
+        <label htmlFor="">Адрес проживания кандидата</label>
         <input
           {...register('residenceAddress')}
           type="text"
@@ -134,7 +115,7 @@ const CandidateForm = () => {
         />
       </div>
       <div className="form-field">
-        <label htmlFor="">Candidate skills</label>
+        <label htmlFor="">Умения кандидата</label>
         <input
           {...register('skills')}
           type="text"
@@ -143,7 +124,7 @@ const CandidateForm = () => {
         />
       </div>
       <div className="form-field">
-        <label htmlFor="">Candidate education</label>
+        <label htmlFor="">Образование кандидата</label>
         <input
           {...register('education')}
           type="text"
@@ -152,7 +133,7 @@ const CandidateForm = () => {
         />
       </div>
       <div className="form-field">
-        <label htmlFor="">Candidate Desired salary</label>
+        <label htmlFor="">Желаемая зп кандидата</label>
         <input
           {...register('desiredSalary')}
           type="number"
@@ -163,7 +144,7 @@ const CandidateForm = () => {
         />
       </div>
       <div className="form-field">
-        <label htmlFor="">Status of Candidate</label>
+        <label htmlFor="">Статус собеседования кандидата</label>
         <input
           {...register('status')}
           type="text"
@@ -172,22 +153,7 @@ const CandidateForm = () => {
         />
       </div>
       <div className="form-field">
-        <label htmlFor="">Candidate possible position</label>
-        <Select
-          // @ts-ignore
-          options={Array.from(positions, ({ position, id }) => ({
-            value: id,
-            label: position,
-          }))}
-          // @ts-ignore
-          onChange={({ value }: { value: string }) => {
-            console.log(value, 'value')
-            setValue('possiblePosition', value)
-          }}
-        />
-      </div>
-      <div className="form-field">
-        <label htmlFor="">Assigned recruiter</label>
+        <label htmlFor="">Курирующий рекрутер</label>
         <Select
           // @ts-ignore
           options={Array.from(recruiters, ({ name, id }) => ({
@@ -195,13 +161,12 @@ const CandidateForm = () => {
             label: name,
           }))}
           // @ts-ignore
-          onChange={({ value }: { value: string }) => {
-            console.log(value, 'value')
+          onChange={({ value }: { value: string }) =>
             setValue('recruiterId', value)
-          }}
+          }
         />
       </div>
-      <button type="submit">Create candidate</button>
+      <button type="submit">Создать кандидата</button>
     </form>
   )
 }

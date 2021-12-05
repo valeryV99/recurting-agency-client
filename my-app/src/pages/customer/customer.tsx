@@ -22,7 +22,7 @@ const Customer = () => {
     <div>
       <h1>
         <span>Company: </span>
-        <span>{customer?.customer_name}</span>
+        <span>{customer?.customerName}</span>
       </h1>
       <div className="customer__info__block">
         <h2>Address: </h2>

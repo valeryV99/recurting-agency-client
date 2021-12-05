@@ -8,7 +8,7 @@ interface CustomerCardProps extends Customer {
 
 const CustomerCard = ({
   id,
-  customer_name,
+  customerName,
   address,
   onGoToCustomer,
 }: CustomerCardProps) => (
@@ -20,7 +20,7 @@ const CustomerCard = ({
     </div>
     <div className="customer-card__values">
       <div className="customer-card__item">{id}</div>
-      <div className="customer-card__item">{customer_name}</div>
+      <div className="customer-card__item">{customerName}</div>
       <div className="customer-card__item">{address}</div>
     </div>
   </div>

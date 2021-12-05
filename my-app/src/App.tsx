@@ -17,6 +17,7 @@ import CandidateForm from './pages/candidateForm'
 import EditPosition from './pages/position/editPosition'
 import Interviews from './pages/interviews'
 import NewInterview from './pages/interview/newInterview'
+import NewEmployee from './pages/employee/newEmployee/newEmployee'
 
 export default function App() {
   const [user, setUser] = useState<WhoAmI | null>({
@@ -101,6 +102,9 @@ export default function App() {
               />
               <Route exact strict sensitive path="/customers/:id/positions/new">
                 <NewPosition />
+              </Route>
+              <Route exact strict sensitive path="/customers/:id/employee/new">
+                <NewEmployee />
               </Route>
               <Route exact strict sensitive path="/customers/new/">
                 <CustomerNew />

@@ -2,7 +2,7 @@ import requestService from './requestService'
 
 export interface Customer {
   id: string;
-  customer_name: string;
+  customerName: string;
   address: string;
 }
 
@@ -21,7 +21,7 @@ export const createCustomer = ({
 }) =>
   requestService
     .post('customers', {
-      customer_name: name,
+      customerName: name,
       address: address,
     })
     .then(({ data }) => data)
